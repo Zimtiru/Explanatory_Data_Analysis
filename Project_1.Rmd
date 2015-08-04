@@ -1,0 +1,113 @@
+---
+title: "Graphyical Representation of Power Consumption"
+author: "Anteneh"
+date: "August 3, 2015"
+output: html_document
+---
+<h4> Sypnosis</h4>
+The main goal of this project is to reproduce (practice/show) grapyically the consumption of power for the household over a 2-day period in February, 2007.  
+<h4> Preprocessing</h4>
+In order to answer these two question first we have to make ready our data for the analysis.
+```{r}
+setwd("/Users/anteneh/Documents/COURSERA/Explanatory_Data_Analysis/Project_1")
+# Download ZIP file from Internet site
+#fileURL <- "http://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+#download.file(fileURL, destfile = "Fhousehold_power_consumption.zip", method="curl")
+power <- unzip("Fhousehold_power_consumption.zip")
+
+power_consumption <- read.table(power, header=TRUE, sep=";")
+```
+```{r}
+power_consumption$Date <- as.Date(power_consumption$Date, format="%d/%m/%Y")
+```
+
+```{r}
+hhpc <- power_consumption[(power_consumption$Date=="2007-02-01") | (power_consumption$Date=="2007-02-02"),]
+```
+
+```{r}
+hhpc$Global_active_power <- as.numeric(as.character(hhpc$Global_active_power))
+```
+```{r}
+hhpc$Global_reactive_power <- as.numeric(as.character(hhpc$Global_reactive_power))
+```
+```{r}
+hhpc$Voltage <- as.numeric(as.character(hhpc$Voltage))
+hhpc <- transform(hhpc, timestamp=as.POSIXct(paste(Date, Time)), "%d/%m/%Y %H:%M:%S")
+hhpc$Sub_metering_1 <- as.numeric(as.character(hhpc$Sub_metering_1))
+hhpc$Sub_metering_2 <- as.numeric(as.character(hhpc$Sub_metering_2))
+hhpc$Sub_metering_3 <- as.numeric(as.character(hhpc$Sub_metering_3))
+```
+<h4> Result</h4>
+<h5> The First Plot</h5>
+
+```{r}
+
+plot_1 <- function() {
+hist(hhpc$Global_active_power, main = paste("Global Active Power"), col="red", xlab="Global Active Power (kilowatts)")
+      dev.copy(png, file="plot1.png", width=580, height=580)
+      dev.off()
+#      cat("Plot1.png has been saved in", getwd())
+}
+plot_1()
+
+```
+
+<h5> The Second Plot</h5>
+```{r}
+plot_2 <- function() {
+      plot(hhpc$timestamp,hhpc$Global_active_power, type="l", 
+      xlab="", ylab="Global Active Power (kilowatts)")
+      dev.copy(png, file="plot2.png", width=480, height=480)
+      dev.off()
+      cat("plot2.png has been saved in", getwd())
+}
+plot_2()
+```
+
+<h5> The Third Plot</h5>
+```{r}
+plot_3 <- function() {
+      plot(hhpc$timestamp,hhpc$Sub_metering_1, type="l", xlab="", ylab="Energy sub metering")
+      lines(hhpc$timestamp,hhpc$Sub_metering_2,col="red")
+      lines(hhpc$timestamp,hhpc$Sub_metering_3,col="blue")
+      legend("topright", col=c("black","red","blue"), c("Sub_metering_1  ","Sub_metering_2  ", "Sub_metering_3  "),lty=c(1,1), lwd=c(1,1))
+      dev.copy(png, file="plot3.png", width=480, height=480)
+      dev.off()
+      cat("plot3.png has been saved in", getwd())
+}
+plot_3()
+
+```
+
+<h5> The Forth Plot</h5>
+Here we have four plots: 
+```{r}
+plot_4 <- function() {
+      par(mfrow=c(2,2))
+      
+      ##Plot 1 in the first row and first column
+      plot(hhpc$timestamp,hhpc$Global_active_power, type="l", xlab="", ylab="Global Active Power")
+      
+      ##Plot 2 in the first row and second column
+      plot(hhpc$timestamp,hhpc$Voltage, type="l", xlab="datetime", ylab="Voltage")
+      
+      ##Plot 3 in the second row and first column
+      plot(hhpc$timestamp,hhpc$Sub_metering_1, type="l", xlab="", 
+      ylab="Energy Sub Metering")
+      lines(hhpc$timestamp,hhpc$Sub_metering_2,col="red")
+      lines(hhpc$timestamp,hhpc$Sub_metering_3,col="blue")
+      legend("topright", col=c("black","red","blue"), 
+      c("Sub_metering_1  ","Sub_metering_2  ", "Sub_metering_3  "),
+      lty=c(1,1), bty="n", cex=.5) 
+      
+      #Plot 4 in the second row and second column
+      plot(hhpc$timestamp,hhpc$Global_reactive_power, type="l", xlab="datetime", ylab="Global_reactive_power")
+      #The out put of the four plot together
+      dev.copy(png, file="plot4.png", width=480, height=480)
+      dev.off()
+      cat("plot4.png has been saved in", getwd())
+}
+plot_4()
+
+```
