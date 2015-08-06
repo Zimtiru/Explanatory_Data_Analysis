@@ -47,7 +47,6 @@ plot_1 <- function() {
 hist(hhpc$Global_active_power, main = paste("Global Active Power"), col="red", xlab="Global Active Power (kilowatts)")
       dev.copy(png, file="plot1.png", width=580, height=580)
       dev.off()
-#      cat("Plot1.png has been saved in", getwd())
 }
 plot_1()
 
@@ -60,7 +59,6 @@ plot_2 <- function() {
       xlab="", ylab="Global Active Power (kilowatts)")
       dev.copy(png, file="plot2.png", width=480, height=480)
       dev.off()
-      cat("plot2.png has been saved in", getwd())
 }
 plot_2()
 ```
@@ -74,7 +72,6 @@ plot_3 <- function() {
       legend("topright", col=c("black","red","blue"), c("Sub_metering_1  ","Sub_metering_2  ", "Sub_metering_3  "),lty=c(1,1), lwd=c(1,1))
       dev.copy(png, file="plot3.png", width=480, height=480)
       dev.off()
-      cat("plot3.png has been saved in", getwd())
 }
 plot_3()
 
@@ -106,7 +103,6 @@ plot_4 <- function() {
       #The out put of the four plot together
       dev.copy(png, file="plot4.png", width=480, height=480)
       dev.off()
-      cat("plot4.png has been saved in", getwd())
 }
 plot_4()
 
