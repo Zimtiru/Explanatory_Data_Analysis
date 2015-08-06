@@ -11,8 +11,8 @@ In order to answer these two question first we have to make ready our data for t
 ```{r}
 setwd("/Users/anteneh/Documents/COURSERA/Explanatory_Data_Analysis/Project_1")
 # Download ZIP file from Internet site
-#fileURL <- "http://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
-#download.file(fileURL, destfile = "Fhousehold_power_consumption.zip", method="curl")
+fileURL <- "http://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+download.file(fileURL, destfile = "Fhousehold_power_consumption.zip", method="curl")
 power <- unzip("Fhousehold_power_consumption.zip")
 
 power_consumption <- read.table(power, header=TRUE, sep=";")
